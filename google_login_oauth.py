@@ -39,11 +39,11 @@ app.add_middleware(SessionMiddleware, secret_key=os.getenv('SECRET_KEY'))
 
 @app.get('/login/google')
 async def google_login(request: Request):
-    redirect_uri = request.url_for('auth')
+    redirect_uri = request.url_for('google_auth_redirect_function')
     return await google_oauth.google.authorize_redirect(request, redirect_uri)
 
 @app.get("/callback/google")
-async def google_auth(request: Request):
+async def google_auth_redirect_function(request: Request):
     try:
         token = await google_oauth.google.authorize_access_token(request)
         userInfo = token.get('userinfo')
